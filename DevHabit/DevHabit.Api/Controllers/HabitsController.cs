@@ -44,8 +44,6 @@ public sealed class HabitsController(ApplicationDbContext dbContext) : Controlle
         return Ok(habit);
     }
 
-    
-
     [HttpPost]
     public async Task<ActionResult<HabitDto>> CreateHabit(CreateHabitDto createHabitDto)
     {
@@ -58,5 +56,22 @@ public sealed class HabitsController(ApplicationDbContext dbContext) : Controlle
         HabitDto habitDto = habit.ToDto();
 
         return CreatedAtAction(nameof(GetHabit), new { id = habitDto.Id }, habitDto);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateHabit(string id, UpdateHabitDto updateHabitDto)
+    {
+        Habit? habit = await dbContext.Habits.FirstOrDefaultAsync(x => x.Id == id);
+
+        if (habit is null)
+        {
+            return NotFound();
+        }
+
+        habit.UpdateFromDto(updateHabitDto);
+
+        await dbContext.SaveChangesAsync();
+
+        return NoContent();
     }
 }
