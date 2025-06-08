@@ -1,8 +1,9 @@
 ﻿using DevHabit.Api.Entities;
+using Newtonsoft.Json;
 
 namespace DevHabit.Api.DTOs.Habits;
 
-public sealed record HabitDto
+public record HabitDto
 {
     public required string Id { get; init; }
 
@@ -29,6 +30,12 @@ public sealed record HabitDto
     public DateTime? UpdatedAtUtc { get; init; }
 
     public DateTime? LastCompletedAtUtc { get; init; }
+}
+
+public sealed record HabitWithTagsDto : HabitDto
+{
+    [JsonProperty(Order = int.MaxValue)]
+    public required string[] Tags { get; init; }
 }
 
 public sealed record MilestoneDto
