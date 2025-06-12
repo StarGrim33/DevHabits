@@ -20,26 +20,24 @@ internal static class HabitQueries
             },
             Target = new TargetDto
             {
-                Unit = h.Target.Unit,
-                Value = h.Target.Value
+                Value = h.Target.Value,
+                Unit = h.Target.Unit
             },
             Status = h.Status,
             IsArchived = h.IsArchived,
             EndDate = h.EndDate,
-            Milestone = h.Milestone == null
-                            ? null
-                            : new MilestoneDto
-                            {
-                                Target = h.Milestone.Target,
-                                Current = h.Milestone.Current
-                            },
+            Milestone = h.Milestone == null ? null : new MilestoneDto
+            {
+                Target = h.Milestone.Target,
+                Current = h.Milestone.Current
+            },
             CreatedAtUtc = h.CreatedAtUtc,
             UpdatedAtUtc = h.UpdatedAtUtc,
             LastCompletedAtUtc = h.LastCompletedAtUtc
         };
-    }  
-    
-    public static Expression<Func<Habit, HabitWithTagsDto>> ProjectWithTagsDto()
+    }
+
+    public static Expression<Func<Habit, HabitWithTagsDto>> ProjectToDtoWithTags()
     {
         return h => new HabitWithTagsDto
         {
@@ -54,19 +52,17 @@ internal static class HabitQueries
             },
             Target = new TargetDto
             {
-                Unit = h.Target.Unit,
-                Value = h.Target.Value
+                Value = h.Target.Value,
+                Unit = h.Target.Unit
             },
             Status = h.Status,
             IsArchived = h.IsArchived,
             EndDate = h.EndDate,
-            Milestone = h.Milestone == null
-                            ? null
-                            : new MilestoneDto
-                            {
-                                Target = h.Milestone.Target,
-                                Current = h.Milestone.Current
-                            },
+            Milestone = h.Milestone == null ? null : new MilestoneDto
+            {
+                Target = h.Milestone.Target,
+                Current = h.Milestone.Current
+            },
             CreatedAtUtc = h.CreatedAtUtc,
             UpdatedAtUtc = h.UpdatedAtUtc,
             LastCompletedAtUtc = h.LastCompletedAtUtc,
