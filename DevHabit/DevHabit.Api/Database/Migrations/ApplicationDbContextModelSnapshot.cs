@@ -3,25 +3,22 @@ using System;
 using DevHabit.Api.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace DevHabit.Api.Migrations.Application
+namespace DevHabit.Api.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250608093816_Add_HabitTags")]
-    partial class Add_HabitTags
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("dev_habit")
-                .HasAnnotation("ProductVersion", "9.0.5")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -81,16 +78,22 @@ namespace DevHabit.Api.Migrations.Application
             modelBuilder.Entity("DevHabit.Api.Entities.HabitTag", b =>
                 {
                     b.Property<string>("HabitId")
+                        .HasMaxLength(500)
                         .HasColumnType("character varying(500)")
                         .HasColumnName("habit_id");
 
                     b.Property<string>("TagId")
-                        .HasColumnType("text")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
                         .HasColumnName("tag_id");
 
                     b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at_utc");
+
+                    b.Property<string>("TagId1")
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("tag_id1");
 
                     b.HasKey("HabitId", "TagId")
                         .HasName("pk_habit_tags");
@@ -98,13 +101,17 @@ namespace DevHabit.Api.Migrations.Application
                     b.HasIndex("TagId")
                         .HasDatabaseName("ix_habit_tags_tag_id");
 
+                    b.HasIndex("TagId1")
+                        .HasDatabaseName("ix_habit_tags_tag_id1");
+
                     b.ToTable("habit_tags", "dev_habit");
                 });
 
             modelBuilder.Entity("DevHabit.Api.Entities.Tag", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("text")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
                         .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAtUtc")
@@ -118,8 +125,8 @@ namespace DevHabit.Api.Migrations.Application
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("name");
 
                     b.Property<DateTime?>("UpdatedAtUtc")
@@ -233,9 +240,19 @@ namespace DevHabit.Api.Migrations.Application
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_habit_tags_tags_tag_id");
+
+                    b.HasOne("DevHabit.Api.Entities.Tag", null)
+                        .WithMany("HabitTags")
+                        .HasForeignKey("TagId1")
+                        .HasConstraintName("fk_habit_tags_tags_tag_id1");
                 });
 
             modelBuilder.Entity("DevHabit.Api.Entities.Habit", b =>
+                {
+                    b.Navigation("HabitTags");
+                });
+
+            modelBuilder.Entity("DevHabit.Api.Entities.Tag", b =>
                 {
                     b.Navigation("HabitTags");
                 });

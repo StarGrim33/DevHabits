@@ -10,16 +10,15 @@ public sealed class HabitTagConfiguration : IEntityTypeConfiguration<HabitTag>
     {
         builder.HasKey(ht => new { ht.HabitId, ht.TagId });
 
-        // Already applied by the FK definition (Habit, Tag)
         builder.Property(h => h.HabitId).HasMaxLength(500);
         builder.Property(h => h.TagId).HasMaxLength(500);
 
-        builder.HasOne<Tag>()
+        builder.HasOne(ht => ht.Habit)
+            .WithMany(ht => ht.HabitTags)
+            .HasForeignKey(ht => ht.HabitId);
+        
+        builder.HasOne(ht => ht.Tag)
             .WithMany()
             .HasForeignKey(ht => ht.TagId);
-
-        builder.HasOne<Habit>()
-            .WithMany(h => h.HabitTags)
-            .HasForeignKey(ht => ht.HabitId);
     }
 }

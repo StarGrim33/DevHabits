@@ -1,9 +1,10 @@
-﻿using DevHabit.Api.Entities;
+﻿using DevHabit.Api.DTOs.Common;
+using DevHabit.Api.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevHabit.Api.DTOs.Habits;
 
-public sealed record HabitsQueryParameters
+public sealed record HabitsQueryParameters : AcceptHeaderDto
 {
     [FromQuery(Name = "q")]
     public string? Search { get; set; }
